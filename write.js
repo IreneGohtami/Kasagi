@@ -13,17 +13,22 @@ function generateAlphabeticalObject(length) {
 }
 
 function generateRealNumberObject(totalDigits) {
-  const integerPartLength = Math.floor(Math.random() * (totalDigits - 1)) + 1;
-  const decimalPartLength = totalDigits - integerPartLength;
+  const effectiveDigits = totalDigits - 2; // Reserve one digit for potential negative sign and one for decimal point
+  const integerPartLength = Math.floor(Math.random() * (effectiveDigits - 1)) + 1;
 
-  // Generate both parts in one loop to reduce iterations
-  let number = '';
-  for (let i = 0; i < totalDigits - 1; i++) {
-    number += Math.floor(Math.random() * 10).toString();
-    if (i === integerPartLength - 1) number += '.';
-  }
+  // Generate integer part
+  const integerPart = Array.from(
+    { length: integerPartLength },
+    () => Math.floor(Math.random() * 10)
+  ).join('');
 
-  return (Math.random() < 0.5 ? '-' : '') + number; // Allow negative numbers randomly
+  // Generate decimal part
+  const decimalPart = Array.from(
+    { length: effectiveDigits - integerPartLength },
+    () => Math.floor(Math.random() * 10)
+  ).join('');
+
+  return (Math.random() < 0.5 ? '-' : '') + integerPart + '.' + decimalPart; // Allow negative numbers randomly
 }
 
 function generateIntegerObject(totalDigits) {
